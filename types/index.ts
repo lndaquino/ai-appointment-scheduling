@@ -14,3 +14,16 @@ export interface Message {
 export interface AIModel {
   generateMessage: (text: string) => Promise<string>
 }
+
+export interface IChatAssistant {
+  messages: Message[];
+  input: string;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+}
+
+export interface ICalendar {
+  appointments: Appointment[];
+  findAppointmentByDate: (searchDate: Date) => Appointment | undefined;
+  createAppointment: (date: Date, name: string) => void;
+}

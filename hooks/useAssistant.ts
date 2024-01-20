@@ -1,11 +1,12 @@
-import { AIModel, Message } from '@/types'
+import { AIModel, ICalendar, Message } from '@/types'
 import { useCallback, useState } from 'react'
 
-const useAssistant = (ai: AIModel) => {
+const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   const [messages, setMessages] = useState<Message[]>(() => {
     return initMessages()
   })
   const [input, setInput] = useState('')
+  const {findAppointmentByDate, createAppointment} = calendar
 
   const handleInputChange = (
     e:
