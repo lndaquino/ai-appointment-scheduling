@@ -6,29 +6,22 @@ import useAssistant from '@/hooks/useAssistant'
 
 export default function Home() {
   const { calendar } = useCalendar()
-  const mistralModel = useAiModel('mistral')
-  const { messages, input, handleSubmit, handleInputChange } =
-    useAssistant(mistralModel)
+
   return (
-    <div>
+    <div className="flex h-screen overflow-hidden">
       {/** Main */}
-      <div>
+      <div className="w-1/2 border-r">
         <Header />
-        <main>
-          <Chat messages={messages} />
-          <Calendar calendar={calendar} />
-          <form onSubmit={handleSubmit}>
-            <input
-              className="fixed bottom-0 mb-8 w-full max-w-md rounded border border-gray-300 p-2 shadow-xl"
-              value={input}
-              placeholder="Say something..."
-              onChange={handleInputChange}
-            />
-          </form>
+        <main className=" bg-neutral-100">
+          <Chat />
         </main>
       </div>
 
       {/** Ancillary */}
+      <div className="w-1/2 pl-4">
+        <h1 className="text-2xl">Ancillary Part</h1>
+        <Calendar calendar={calendar} />
+      </div>
     </div>
   )
 }
