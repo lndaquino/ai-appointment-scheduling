@@ -1,13 +1,13 @@
-import { Appointment } from "@/types"
+import { Appointment } from '@/types'
 
 interface IProps {
   calendar: Appointment[]
 }
 
-export default function Calendar({calendar}: IProps) {
+export function Calendar({ calendar }: IProps) {
   return (
     <div>
-        <h1>CALENDAR</h1>
+      <h1>CALENDAR</h1>
     </div>
   )
 }
