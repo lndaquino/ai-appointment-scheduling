@@ -20,6 +20,13 @@ const useAssistant = (ai: AIModel) => {
       e.preventDefault()
       if (!input) return
 
+      const newMessage: Message = {
+        id: messages.length + 1,
+        createdAt: new Date(),
+        content: input,
+        role: 'user',
+      }
+      setMessages((prevMessages) => [...prevMessages, newMessage])
       // if !hasDate
       // getDate() from LLM
       // if date detected
@@ -40,7 +47,7 @@ const useAssistant = (ai: AIModel) => {
       console.log(response)
       setInput('')
     },
-    [input],
+    [input, messages, setMessages],
   )
 
   return {
