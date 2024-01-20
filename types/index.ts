@@ -1,16 +1,16 @@
 export interface Appointment {
-    date: Date
-    name: string
+  date: Date
+  name: string
 }
 
 export type Role = 'user' | 'assistant'
 export interface Message {
-    id: number;
-    createdAt: Date;
-    content: string;
-    role: Role;
+  id: number
+  createdAt: Date
+  content: string
+  role: Role
 }
 
 export interface AIModel {
-    generateMessage: (text: string) => Promise<string>
+  generateMessage: (text: string) => Promise<string>
 }

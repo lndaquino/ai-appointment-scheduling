@@ -5,16 +5,16 @@ import logo from '@/assets/logo.svg'
 
 export function Header() {
   return (
-    <header className="flex justify-between border-b shadow-xl">
+    <header className="fixed z-30 flex h-20 w-1/2 justify-between border-b shadow-lg">
       <div className="flex w-1/2">
         <Image src={logo} width={350} alt="logo" />
       </div>
-      <nav className="flex w-1/2 items-center space-x-6">
-        <button className="flex items-center justify-center gap-1 hover:text-indigo-600">
+      <nav className="flex w-1/2 items-center justify-end space-x-6 pr-4">
+        <button className="flex items-center justify-center gap-1 text-indigo-600 hover:text-indigo-500">
           <Chat size={26} />
           <h3 className="text-lg">Chat</h3>
         </button>
-        <button className="flex items-center justify-center gap-1 hover:text-yellow-500">
+        <button className="flex items-center justify-center gap-1 text-yellow-500 hover:text-yellow-400">
           <Microphone size={26} />
           <h3 className="text-lg">Voice</h3>
         </button>
