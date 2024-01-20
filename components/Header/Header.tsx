@@ -7,7 +7,7 @@ export function Header() {
   return (
     <header className="flex justify-between border-b shadow-xl">
       <div className="flex w-1/2">
-        <Image src={logo} width={500} alt="logo" />
+        <Image src={logo} width={350} alt="logo" />
       </div>
       <nav className="flex w-1/2 items-center space-x-6">
         <button className="flex items-center justify-center gap-1 hover:text-indigo-600">
