@@ -5,9 +5,9 @@ interface IProps {
 }
 
 export default function Calendar({calendar}: IProps) {
-    return (
-      <div>
-          <h1>CALENDAR</h1>
-      </div>
-    )
-  }
+  return (
+    <div>
+        <h1>CALENDAR</h1>
+    </div>
+  )
+}
