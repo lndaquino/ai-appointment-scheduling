@@ -5,7 +5,7 @@ import logo from '@/assets/logo.svg'
 
 export function Header() {
   return (
-    <header className="flex justify-between border-b shadow-xl">
+    <header className="fixed z-30 flex h-20 w-1/2 justify-between border-b shadow-lg">
       <div className="flex w-1/2">
         <Image src={logo} width={350} alt="logo" />
       </div>
