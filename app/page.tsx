@@ -5,7 +5,9 @@ import useAiModel from '@/hooks/useAiModel'
 import useAssistant from '@/hooks/useAssistant'
 
 export default function Home() {
-  const { calendar } = useCalendar()
+  const calendar = useCalendar()
+  const mistralModel = useAiModel('mistral')
+  const chatAssistant = useAssistant(mistralModel, calendar)
 
   return (
     <div className="flex h-screen overflow-hidden">
@@ -13,13 +15,13 @@ export default function Home() {
       <div className="w-full xl:w-1/2 xl:border-r">
         <Header />
         <main className=" bg-neutral-100">
-          <Chat />
+          <Chat chatAssistant={chatAssistant} />
         </main>
       </div>
 
       {/** Ancillary */}
       <div className="hidden w-1/2 px-4 xl:block">
-        <Calendar />
+        <Calendar calendar={calendar} />
       </div>
     </div>
   )

@@ -1,14 +1,14 @@
 import React from 'react'
 import { format, isSameDay, isToday, isSameMonth } from 'date-fns'
 import useCalendar from '@/hooks/useCalendar'
-import { Appointment } from '@/types'
+import { ICalendar } from '@/types'
 
 interface IProps {
-  calendar: Appointment[]
+  calendar: ICalendar
 }
 
-export function Calendar() {
-  const { calendar, createAppointment } = useCalendar()
+export function Calendar({ calendar }: IProps) {
+  const { appointments } = calendar
   const today = new Date()
   const currentMonth = today.getMonth()
   const currentYear = today.getFullYear()
@@ -67,7 +67,7 @@ export function Calendar() {
                   <span>{format(date, 'd')}</span>
 
                   <div className="mt-1">
-                    {calendar.map((appointment) =>
+                    {appointments.map((appointment) =>
                       isSameMonth(date, appointment.date) &&
                       isSameDay(date, appointment.date) ? (
                         <div

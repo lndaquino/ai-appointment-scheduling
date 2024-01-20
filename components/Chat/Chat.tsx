@@ -1,15 +1,13 @@
-import useAiModel from '@/hooks/useAiModel'
-import useAssistant from '@/hooks/useAssistant'
-import { Message } from '@/types'
+import { IChatAssistant } from '@/types'
 import { PaperPlaneRight } from '@phosphor-icons/react'
 import { format } from 'date-fns'
 import React, { useRef, useEffect } from 'react'
 
-export function Chat() {
-  const mistralModel = useAiModel('mistral')
-  const { messages, input, handleSubmit, handleInputChange } =
-    useAssistant(mistralModel)
-
+interface IProps {
+  chatAssistant: IChatAssistant
+}
+export function Chat({ chatAssistant }: IProps) {
+  const { messages, input, handleInputChange, handleSubmit } = chatAssistant
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {

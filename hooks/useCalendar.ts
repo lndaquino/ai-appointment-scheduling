@@ -2,12 +2,12 @@ import { Appointment } from '@/types'
 import { useState } from 'react'
 
 const useCalendar = () => {
-  const [calendar, setCalendar] = useState<Appointment[]>(() => {
-    return initCalendar()
+  const [appointments, setAppointments] = useState<Appointment[]>(() => {
+    return initAppointments()
   })
 
   const findAppointmentByDate = (searchDate: Date): Appointment | undefined => {
-    const appointmentsOnDate = calendar.find(
+    const appointmentsOnDate = appointments.find(
       (appointment) => appointment.date.getTime() === searchDate.getTime(),
     )
     return appointmentsOnDate
@@ -15,20 +15,20 @@ const useCalendar = () => {
 
   const createAppointment = (date: Date, name: string) => {
     const appt = { date, name }
-    setCalendar((current) => {
+    setAppointments((current) => {
       current.push(appt)
       return current
     })
   }
 
   return {
-    calendar,
+    appointments,
     findAppointmentByDate,
     createAppointment,
   }
 }
 
-const initCalendar = () => {
+const initAppointments = () => {
   const now = new Date()
   const appts = [] as Appointment[]
   // set the number of random appointments (1 to 30)
