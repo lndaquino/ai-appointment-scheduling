@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/** Main */}
-      <div className="w-1/2 border-r">
+      <div className="w-full xl:w-1/2 xl:border-r">
         <Header />
         <main className=" bg-neutral-100">
           <Chat />
@@ -18,9 +18,8 @@ export default function Home() {
       </div>
 
       {/** Ancillary */}
-      <div className="w-1/2 pl-4">
-        <h1 className="text-2xl">Ancillary Part</h1>
-        <Calendar calendar={calendar} />
+      <div className="hidden w-1/2 px-4 xl:block">
+        <Calendar />
       </div>
     </div>
   )
