@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div className="flex h-screen overflow-hidden">
       {/** Main */}
-      <div className="w-full xl:w-1/2 xl:border-r">
+      <div className="w-full xl:w-3/5 xl:border-r">
         <Header />
         <main className=" bg-neutral-100">
           <Chat chatAssistant={chatAssistant} />
@@ -20,7 +20,7 @@ export default function Home() {
       </div>
 
       {/** Ancillary */}
-      <div className="hidden w-1/2 px-4 xl:block">
+      <div className="hidden w-2/5 p-6 xl:block">
         <Calendar calendar={calendar} />
       </div>
     </div>
