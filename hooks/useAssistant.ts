@@ -7,8 +7,16 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     return initMessages()
   })
   const [input, setInput] = useState('')
-  const {findAppointmentByDate, createAppointment} = calendar
-  const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const { findAppointmentByDate, createAppointment } = calendar
+  const dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ]
   const mood = 'polite'
 
   let date = ''
@@ -33,7 +41,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
         role: 'user',
       }
       setMessages((prevMessages) => {
-        newUserMessage.id=prevMessages.length+1
+        newUserMessage.id = prevMessages.length + 1
         return [...prevMessages, newUserMessage]
       })
       setInput('')
@@ -53,7 +61,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
           }
 
           setMessages((prevMessages) => {
-            newAssistantMessage.id=prevMessages.length+1
+            newAssistantMessage.id = prevMessages.length + 1
             return [...prevMessages, newAssistantMessage]
           })
         }
@@ -72,22 +80,22 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
       // ask confirmation and get name
       // else ask for another date or time
       // repeat
-
     },
     [input, messages, setMessages, ai],
   )
 
-  const getLastMessage = (role:Role):Message => {
-    const filteredMessages = messages.filter((message) => message.role === role);
+  const getLastMessage = (role: Role): Message => {
+    const filteredMessages = messages.filter((message) => message.role === role)
     if (filteredMessages.length > 0) {
-      const sortedMessages = filteredMessages.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
-      return sortedMessages[0];
+      const sortedMessages = filteredMessages.sort(
+        (a, b) => b.createdAt.getTime() - a.createdAt.getTime(),
+      )
+      return sortedMessages[0]
     }
     return messages[0]
   }
 
-
-  const checkDateOnMessage= async (message:Message):Promise<string> => {
+  const checkDateOnMessage = async (message: Message): Promise<string> => {
     const today = format(message.createdAt, 'yyyy-MM-dd')
     const dayOfWeek = dayNames[message.createdAt.getDay()]
     const lastAssistantMessage = getLastMessage('assistant')
@@ -99,15 +107,23 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     return response.includes('empty') ? '' : response
   }
 
-  const getUserMessages = ():string => {
-    return messages.filter(msg => msg.role==='user').map(msg => msg.content).join(".")
+  const getUserMessages = (): string => {
+    return messages
+      .filter((msg) => msg.role === 'user')
+      .map((msg) => msg.content)
+      .join('.')
   }
-  
-  const generateNewDateMessage = async (newUserMessage: Message): Promise<string> =>{
+
+  const generateNewDateMessage = async (
+    newUserMessage: Message,
+  ): Promise<string> => {
     const previousUserMessages = getUserMessages()
     const userMessages = previousUserMessages + `. ${newUserMessage.content}`
     console.log(`USER MESSAGES: ${userMessages}`)
-    const prompt = `You're an clinic's secretary helping an customer to schedule an appointment after ${format(newUserMessage.createdAt, 'yyyy-MM-dd')}. Your last message sent to the customer was: "${getLastMessage('assistant').content}". Generate a ${mood} message up to 20 words asking for a near future date based on the user messages sent so far: "` + getUserMessages() + `"`
+    const prompt =
+      `You're an clinic's secretary helping an customer to schedule an appointment after ${format(newUserMessage.createdAt, 'yyyy-MM-dd')}. Your last message sent to the customer was: "${getLastMessage('assistant').content}". Generate a ${mood} message up to 20 words asking for a near future date based on the user messages sent so far: "` +
+      getUserMessages() +
+      `"`
     return await ai.generateMessage(prompt)
   }
 
