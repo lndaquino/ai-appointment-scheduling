@@ -1,6 +1,5 @@
 import React from 'react'
 import { format, isSameDay, isToday, isSameMonth } from 'date-fns'
-import useCalendar from '@/hooks/useCalendar'
 import { ICalendar } from '@/types'
 
 interface IProps {
