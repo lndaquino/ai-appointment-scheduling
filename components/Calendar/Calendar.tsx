@@ -38,11 +38,6 @@ export function Calendar({ calendar }: IProps) {
 
   return (
     <table className="w-full" style={{ tableLayout: 'fixed' }}>
-      <colgroup>
-        {daysOfWeek.map((day, index) => (
-          <col key={index} style={{ width: 'calc(100% / 7)' }} />
-        ))}
-      </colgroup>
       <thead>
         <tr>
           {daysOfWeek.map((day) => (
@@ -62,7 +57,7 @@ export function Calendar({ calendar }: IProps) {
                   !isSameMonth(date, firstDayOfMonth) ? 'text-gray-500' : ''
                 } ${isToday(date) ? 'bg-blue-200' : ''}`}
               >
-                <div className="h-36 w-full rounded-lg p-2 shadow-lg">
+                <div className="h-24 w-24 rounded-lg p-2 shadow-lg">
                   <span>{format(date, 'd')}</span>
 
                   <div className="mt-1">
