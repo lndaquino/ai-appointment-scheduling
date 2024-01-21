@@ -7,7 +7,7 @@
   --t: 30px; /* the size of the tail */
   
   max-width: 300px;
-  padding: calc(2*var(--r)/3);
+  padding: 8px;
   -webkit-mask: 
   radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%)  
     var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
