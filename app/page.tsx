@@ -20,7 +20,7 @@ export default function Home() {
       </div>
 
       {/** Ancillary */}
-      <div className="hidden w-2/5 p-6 xl:block">
+      <div className="hidden w-2/5 overflow-auto p-6 xl:block">
         <Calendar calendar={calendar} />
       </div>
     </div>

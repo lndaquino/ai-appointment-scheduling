@@ -1,4 +1,5 @@
 import { Appointment } from '@/types'
+import { isSameDay } from 'date-fns'
 import { useState } from 'react'
 
 const useCalendar = () => {
@@ -31,15 +32,14 @@ const useCalendar = () => {
 const initAppointments = () => {
   const now = new Date()
   const appts = [] as Appointment[]
-  // set the number of random appointments (1 to 30)
+
+  const appointmentsPerDay = new Map<string, number>()
+
   const numberOfAppointments = Math.floor(Math.random() * 30) + 1
 
   for (let i = 0; i < numberOfAppointments; i++) {
-    // randomly generates a number from 0 to 44
     const daysToAdd = Math.floor(Math.random() * 45)
-    // randomly generates a number from 8 to 18
     const hour = Math.floor(Math.random() * 10) + 8
-    // randomly generates 0 or 30
     const minute = Math.random() < 0.5 ? 0 : 30
     const apptDate = new Date(
       now.getFullYear(),
@@ -48,6 +48,21 @@ const initAppointments = () => {
       hour,
       minute,
     )
+
+    const formattedDate = apptDate.toISOString().split('T')[0]
+    if (appointmentsPerDay.has(formattedDate)) {
+      const appointmentsCount = appointmentsPerDay.get(formattedDate)
+      if (appointmentsCount && appointmentsCount >= 3) {
+        continue
+      }
+      appointmentsPerDay.set(
+        formattedDate,
+        appointmentsCount ? appointmentsCount + 1 : 1,
+      )
+    } else {
+      appointmentsPerDay.set(formattedDate, 1)
+    }
+
     const appt = {
       date: apptDate,
       name: 'Test',
