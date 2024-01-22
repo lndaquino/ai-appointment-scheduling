@@ -19,7 +19,6 @@ export function Calendar({ calendar }: IProps) {
   const currentYear = today.getFullYear()
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1)
 
-  // Calcula a data final para o terceiro mês a partir da data atual
   const thirdMonth = addMonths(today, 2)
   const lastDayOfThirdMonth = new Date(
     thirdMonth.getFullYear(),
@@ -140,7 +139,7 @@ export function Calendar({ calendar }: IProps) {
                         } text-sm`}
                       >
                         <div
-                          className={`m-1 h-28 w-auto rounded-lg p-2 shadow-lg ${
+                          className={`m-1 h-40 w-auto rounded-lg p-2 shadow-lg ${
                             isToday(date) ? 'border bg-gray-100 font-bold' : ''
                           } ${
                             !isSameMonth(date, month.startOfMonth)
@@ -151,9 +150,14 @@ export function Calendar({ calendar }: IProps) {
                           <span>{format(date, 'd')}</span>
 
                           <div className="mt-1 flex flex-col gap-1">
-                            {clientAppointments.map((appointment, index) =>
-                              isSameMonth(date, appointment.date) &&
-                              isSameDay(date, appointment.date) ? (
+                            {clientAppointments
+                              .filter(
+                                (appointment) =>
+                                  isSameMonth(date, appointment.date) &&
+                                  isSameDay(date, appointment.date),
+                              )
+                              .sort((a, b) => Number(a.date) - Number(b.date))
+                              .map((appointment, index) => (
                                 <div
                                   key={appointment.date.toString()}
                                   className="flex gap-1 font-normal"
@@ -165,10 +169,14 @@ export function Calendar({ calendar }: IProps) {
                                         : bgColor(index)
                                     } p-1 text-white`}
                                   ></span>
-                                  <span>{appointment.name}</span>
+                                  <p className="flex flex-col">
+                                    <span>{appointment.name}</span>
+                                    <span className="text-xs text-gray-600">
+                                      {format(appointment.date, 'HH:mm')}
+                                    </span>
+                                  </p>
                                 </div>
-                              ) : null,
-                            )}
+                              ))}
                           </div>
                         </div>
                       </td>
