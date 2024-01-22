@@ -140,7 +140,7 @@ export function Calendar({ calendar }: IProps) {
                       >
                         <div
                           className={`m-1 h-40 w-auto rounded-lg p-2 shadow-lg ${
-                            isToday(date) ? 'border bg-gray-100 font-bold' : ''
+                            isToday(date) ? 'border bg-yellow-50 font-bold' : ''
                           } ${
                             !isSameMonth(date, month.startOfMonth)
                               ? 'bg-gray-100'
@@ -171,7 +171,13 @@ export function Calendar({ calendar }: IProps) {
                                   ></span>
                                   <p className="flex flex-col">
                                     <span>{appointment.name}</span>
-                                    <span className="text-xs text-gray-600">
+                                    <span
+                                      className={`text-xs ${
+                                        !isSameMonth(date, month.startOfMonth)
+                                          ? 'text-gray-100'
+                                          : 'text-gray-600'
+                                      }`}
+                                    >
                                       {format(appointment.date, 'HH:mm')}
                                     </span>
                                   </p>
