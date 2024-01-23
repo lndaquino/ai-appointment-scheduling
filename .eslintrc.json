@@ -1,6 +1,8 @@
 {
-  "extends": ["@rocketseat/eslint-config/next", "next/core-web-vitals"],
+  "extends": ["@rocketseat/eslint-config/next", "next/core-web-vitals", "prettier"],
   "rules": {
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "camelcase": "off",
+    "@typescript-eslint/ban-ts-comment": "off"
   }
 }
