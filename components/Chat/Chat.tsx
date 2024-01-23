@@ -7,7 +7,7 @@ interface IProps {
   chatAssistant: IChatAssistant
 }
 export function Chat({ chatAssistant }: IProps) {
-  const { messages, input, handleInputChange, handleSubmit } = chatAssistant
+  const { messages, input, handleInputChange, handleSubmit, isConfirmed } = chatAssistant
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -52,9 +52,10 @@ export function Chat({ chatAssistant }: IProps) {
           value={input}
           placeholder="Say something..."
           onChange={handleInputChange}
+          disabled={isConfirmed}
         />
 
-        <button type="submit" className="text-indigo-700 hover:text-indigo-500">
+        <button type="submit" disabled={isConfirmed} className="text-indigo-700 hover:text-indigo-500">
           <PaperPlaneRight size={26} />
         </button>
       </form>

@@ -24,10 +24,12 @@ export interface IChatAssistant {
       | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>
+  isConfirmed: boolean
 }
 
 export interface ICalendar {
   appointments: Appointment[]
   findAppointmentByDate: (searchDate: Date) => Appointment | undefined
   createAppointment: (date: Date, name: string) => void
+  getFreeTime: (date: string) => string[]
 }
