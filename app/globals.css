@@ -6,7 +6,7 @@
   --r: 25px; /* the radius */
   --t: 30px; /* the size of the tail */
   
-  max-width: 300px;
+  max-width: 60%;
   padding: 8px;
   -webkit-mask: 
   radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%)  
@@ -47,4 +47,13 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #6366f1;
   cursor: pointer;
+}
+
+button:hover .coming-soon {
+  display: block;
+}
+
+.coming-soon {
+  text-align: center;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }

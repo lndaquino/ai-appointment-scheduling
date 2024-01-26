@@ -3,8 +3,8 @@
 import { createContext, ReactNode, useState } from 'react'
 
 interface AppContextType {
-  textChat: boolean
-  handleChatType: (textChat: boolean) => void
+  mood: string
+  setMood: (textChat: string) => void
 }
 
 interface AppContextProps {
@@ -14,17 +14,13 @@ interface AppContextProps {
 export const AppContext = createContext({} as AppContextType)
 
 export function AppContextProvider({ children }: AppContextProps) {
-  const [textChat, setTextChat] = useState<boolean>(true)
-
-  function handleChatType(textChat: boolean) {
-    setTextChat(textChat)
-  }
+  const [mood, setMood] = useState('Select Mood')
 
   return (
     <AppContext.Provider
       value={{
-        textChat,
-        handleChatType,
+        mood,
+        setMood,
       }}
     >
       {children}
