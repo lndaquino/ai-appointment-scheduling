@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import './globals.css'
 import { AppContextProvider } from '@/contexts/AppContext'
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={poppins.className}>
         <AppContextProvider>{children}</AppContextProvider>
+        <Analytics />
       </body>
     </html>
   )
