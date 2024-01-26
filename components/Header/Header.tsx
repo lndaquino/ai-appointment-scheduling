@@ -5,9 +5,9 @@ import logo from '@/assets/logo.svg'
 
 export function Header() {
   return (
-    <header className="fixed z-30 flex h-20 w-full justify-between border-b shadow-lg xl:w-3/5">
+    <header className="fixed z-50 flex h-20 w-full justify-between border-b shadow-lg xl:w-3/5">
       <div className="flex w-1/2">
-        <Image src={logo} width={350} alt="logo" />
+        <Image src={logo} alt="logo" priority style={{ width: 'auto' }} />
       </div>
       <nav className="flex w-1/2 items-center justify-end space-x-6 pr-4">
         <button className="flex items-center justify-center gap-1 text-indigo-600 hover:text-indigo-500">

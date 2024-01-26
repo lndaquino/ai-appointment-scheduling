@@ -9,7 +9,8 @@ interface IProps {
 export function Chat({ chatAssistant }: IProps) {
   const [selectedOption, setSelectedOption] = useState<string>('')
 
-  const { messages, input, handleInputChange, handleSubmit, isConfirmed } = chatAssistant
+  const { messages, input, handleInputChange, handleSubmit, isConfirmed } =
+    chatAssistant
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export function Chat({ chatAssistant }: IProps) {
     <div className="flex h-screen flex-col justify-between bg-gray-50">
       <div
         ref={messagesContainerRef}
-        className="mt-20 flex max-h-screen w-full flex-col overflow-y-auto p-4"
+        className="z-0 mt-20 flex max-h-screen w-full flex-col overflow-y-auto p-4"
       >
         {messages.map((message) => (
           <div
@@ -76,7 +77,11 @@ export function Chat({ chatAssistant }: IProps) {
           </select>
         </div>
 
-        <button type="submit" disabled={isConfirmed} className="text-yellow-300 hover:text-yellow-400">
+        <button
+          type="submit"
+          disabled={isConfirmed}
+          className="text-yellow-300 hover:text-yellow-400"
+        >
           <PaperPlaneRight size={26} />
         </button>
       </form>
