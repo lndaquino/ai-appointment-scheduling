@@ -1,7 +1,7 @@
 import { IChatAssistant } from '@/types'
 import { PaperPlaneRight } from '@phosphor-icons/react'
 import { format } from 'date-fns'
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 
 interface IProps {
   chatAssistant: IChatAssistant
@@ -10,6 +10,7 @@ export function Chat({ chatAssistant }: IProps) {
   const { messages, input, handleInputChange, handleSubmit, isConfirmed } =
     chatAssistant
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const scrollToBottom = () => {
@@ -21,6 +22,19 @@ export function Chat({ chatAssistant }: IProps) {
 
     scrollToBottom()
   }, [messages])
+
+  async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setIsLoading(true)
+
+    try {
+      await handleSubmit(event)
+    } catch (error) {
+      console.log(error)
+    }
+
+    setIsLoading(false)
+  }
 
   function extractHours(date: Date) {
     return format(date, 'HH:mm')
@@ -45,23 +59,27 @@ export function Chat({ chatAssistant }: IProps) {
         ))}
       </div>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleFormSubmit}
         className="z-10 flex gap-2 border-t bg-indigo-400 px-4 py-4"
       >
         <input
-          className="z-20 w-full rounded border border-gray-300 p-1 text-sm shadow-lg outline-none hover:bg-gray-50"
+          className="z-30 w-full rounded border border-gray-300 bg-gray-50 p-1 text-sm shadow-lg outline-none "
           value={input}
           placeholder="Say something..."
           onChange={handleInputChange}
-          disabled={isConfirmed}
+          disabled={isConfirmed || isLoading}
         />
 
         <button
           type="submit"
-          disabled={isConfirmed}
+          disabled={isConfirmed || isLoading}
           className="text-yellow-300 hover:text-yellow-400"
         >
-          <PaperPlaneRight size={26} />
+          {isLoading ? (
+            <div className="spinner"></div> // Render the spinner when isLoading is true
+          ) : (
+            <PaperPlaneRight size={26} />
+          )}
         </button>
       </form>
     </div>
