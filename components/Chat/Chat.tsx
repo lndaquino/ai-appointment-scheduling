@@ -49,7 +49,7 @@ export function Chat({ chatAssistant }: IProps) {
         className="z-10 flex gap-2 border-t bg-indigo-400 px-4 py-4"
       >
         <input
-          className="w-full rounded border border-gray-300 p-1 text-sm shadow-lg outline-none hover:bg-gray-50"
+          className="z-20 w-full rounded border border-gray-300 p-1 text-sm shadow-lg outline-none hover:bg-gray-50"
           value={input}
           placeholder="Say something..."
           onChange={handleInputChange}
