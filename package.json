@@ -12,6 +12,7 @@
   "dependencies": {
     "@huggingface/inference": "^2.6.4",
     "@phosphor-icons/react": "^2.0.15",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@rocketseat/eslint-config": "^2.1.0",
     "@vercel/analytics": "^1.1.2",
     "ai": "^2.2.31",
