@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   format,
   isSameDay,
@@ -14,6 +14,7 @@ interface IProps {
 }
 
 export function Calendar({ calendar }: IProps) {
+  const [isLoading, setIsLoading] = useState(true)
   const today = new Date()
   const currentMonth = today.getMonth()
   const currentYear = today.getFullYear()
@@ -96,104 +97,120 @@ export function Calendar({ calendar }: IProps) {
     const fetchData = async () => {
       const { appointments } = calendar
       setClientAppointments(appointments)
+      setIsLoading(false)
     }
 
     fetchData()
   }, [])
 
   return (
-    <div>
-      {months.map((month, monthIndex) => (
-        <div key={monthIndex}>
-          <h2 className="mt-4 text-lg font-bold">
-            {format(month.startOfMonth, 'MMMM yyyy')}
-          </h2>
-          <table className="w-full" style={{ tableLayout: 'fixed' }}>
-            <thead>
-              <tr>
-                {daysOfWeek.map((day) => (
-                  <th key={day} className="h-12 text-center">
-                    {day}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {month.weeks.map((week, weekIndex) => {
-                const isWeekBeforeStartOfMonth =
-                  week[0] < startOfWeek(new Date())
-
-                if (isWeekBeforeStartOfMonth) {
-                  return null
-                }
-
-                return (
-                  <tr key={weekIndex}>
-                    {week.map((date) => (
-                      <td
-                        key={date.toString()}
-                        className={`${
-                          !isSameMonth(date, month.startOfMonth)
-                            ? 'text-gray-100'
-                            : ''
-                        } text-sm`}
-                      >
-                        <div
-                          className={`m-1 h-40 w-auto rounded-lg p-2 shadow-lg ${
-                            isToday(date) ? 'border bg-yellow-50 font-bold' : ''
-                          } ${
-                            !isSameMonth(date, month.startOfMonth)
-                              ? 'bg-gray-100'
-                              : ''
-                          }`}
-                        >
-                          <span>{format(date, 'd')}</span>
-
-                          <div className="mt-1 flex flex-col gap-1">
-                            {clientAppointments
-                              .filter(
-                                (appointment) =>
-                                  isSameMonth(date, appointment.date) &&
-                                  isSameDay(date, appointment.date),
-                              )
-                              .sort((a, b) => Number(a.date) - Number(b.date))
-                              .map((appointment, index) => (
-                                <div
-                                  key={appointment.date.toString()}
-                                  className="flex gap-1 font-normal"
-                                >
-                                  <span
-                                    className={`${
-                                      !isSameMonth(date, month.startOfMonth)
-                                        ? 'bg-gray-100'
-                                        : bgColor(index)
-                                    } p-1 text-white`}
-                                  ></span>
-                                  <p className="flex flex-col">
-                                    <span>{appointment.name}</span>
-                                    <span
-                                      className={`text-xs ${
-                                        !isSameMonth(date, month.startOfMonth)
-                                          ? 'text-gray-100'
-                                          : 'text-gray-600'
-                                      }`}
-                                    >
-                                      {format(appointment.date, 'HH:mm')}
-                                    </span>
-                                  </p>
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      </td>
+    <>
+      {isLoading ? (
+        <div className="flex h-full items-center justify-center">
+          <div className="spinner"></div>
+        </div>
+      ) : (
+        <div>
+          {months.map((month, monthIndex) => (
+            <div key={monthIndex}>
+              <h2 className="mt-4 text-lg font-bold">
+                {format(month.startOfMonth, 'MMMM yyyy')}
+              </h2>
+              <table className="w-full" style={{ tableLayout: 'fixed' }}>
+                <thead>
+                  <tr>
+                    {daysOfWeek.map((day) => (
+                      <th key={day} className="h-12 text-center">
+                        {day}
+                      </th>
                     ))}
                   </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {month.weeks.map((week, weekIndex) => {
+                    const isWeekBeforeStartOfMonth =
+                      week[0] < startOfWeek(new Date())
+
+                    if (isWeekBeforeStartOfMonth) {
+                      return null
+                    }
+
+                    return (
+                      <tr key={weekIndex}>
+                        {week.map((date) => (
+                          <td
+                            key={date.toString()}
+                            className={`${
+                              !isSameMonth(date, month.startOfMonth)
+                                ? 'text-gray-100'
+                                : ''
+                            } text-sm`}
+                          >
+                            <div
+                              className={`m-1 h-40 w-auto rounded-lg p-2 shadow-lg ${
+                                isToday(date)
+                                  ? 'border bg-yellow-50 font-bold'
+                                  : ''
+                              } ${
+                                !isSameMonth(date, month.startOfMonth)
+                                  ? 'bg-gray-100'
+                                  : ''
+                              }`}
+                            >
+                              <span>{format(date, 'd')}</span>
+
+                              <div className="mt-1 flex flex-col gap-1">
+                                {clientAppointments
+                                  .filter(
+                                    (appointment) =>
+                                      isSameMonth(date, appointment.date) &&
+                                      isSameDay(date, appointment.date),
+                                  )
+                                  .sort(
+                                    (a, b) => Number(a.date) - Number(b.date),
+                                  )
+                                  .map((appointment, index) => (
+                                    <div
+                                      key={appointment.date.toString()}
+                                      className="flex gap-1 font-normal"
+                                    >
+                                      <span
+                                        className={`${
+                                          !isSameMonth(date, month.startOfMonth)
+                                            ? 'bg-gray-100'
+                                            : bgColor(index)
+                                        } p-1 text-white`}
+                                      ></span>
+                                      <p className="flex flex-col">
+                                        <span>{appointment.name}</span>
+                                        <span
+                                          className={`text-xs ${
+                                            !isSameMonth(
+                                              date,
+                                              month.startOfMonth,
+                                            )
+                                              ? 'text-gray-100'
+                                              : 'text-gray-600'
+                                          }`}
+                                        >
+                                          {format(appointment.date, 'HH:mm')}
+                                        </span>
+                                      </p>
+                                    </div>
+                                  ))}
+                              </div>
+                            </div>
+                          </td>
+                        ))}
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+      )}
+    </>
   )
 }
