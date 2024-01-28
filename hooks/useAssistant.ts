@@ -22,7 +22,7 @@ let time = ''
 let dateConfirmedBy = ''
 
 const useAssistant = (ai: AIModel, calendar: ICalendar) => {
-  const { mood } = useContext(AppContext)
+  const { mood, handleFinishedClose } = useContext(AppContext)
 
   const [messages, setMessages] = useState<Message[]>(() => {
     return initMessages()
@@ -97,6 +97,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
           })
           handlingMessage = false
           setIsConfirmed(true)
+          handleFinishedClose()
         }
       }
 
