@@ -22,12 +22,11 @@ export function FinishedModal({
 
         <div className="flex flex-col items-center justify-center gap-6 p-4 pt-0">
           <h1 className="mb-2 text-center text-lg font-bold text-indigo-600 md:text-2xl">
-            Your appointment was just scheduled!
+            Thank you!
           </h1>
-          <p className="mb-4 text-center text-sm text-gray-600 md:text-base">
-            Now, you can take a look at the calendar to see your appointment
-            date and time! Thank you!
-          </p>
+          <h2 className="mb-2 text-center text-base text-gray-700 md:text-xl">
+            Your appointment was just scheduled!
+          </h2>
         </div>
       </Dialog.Content>
     </Dialog.Portal>
