@@ -2,6 +2,7 @@ import { AppContext } from '@/contexts/AppContext'
 import { AIModel, ICalendar, Message, Role } from '@/types'
 import { format } from 'date-fns'
 import { useContext, useState } from 'react'
+import { debug } from '@/utils'
 
 const WAIT_DATE = 0
 const WAIT_TIME = 1
@@ -40,7 +41,6 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
     if (!input) return
 
     const newUserMessage: Message = {
@@ -57,15 +57,15 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
 
     let handlingMessage = true
     while (handlingMessage) {
-      console.log(
+      debug(
         `status = ${status} / date = ${date} / time = ${time} / dateConfirmedBy = ${dateConfirmedBy}`,
       )
       if (status === WAIT_CONFIRMATION) {
-        console.log('CHECKING IF IT HAS A CONFIRMATION')
+        debug('CHECKING IF IT HAS A CONFIRMATION')
         dateConfirmedBy = await checkForConfirmation(newUserMessage)
-        console.log(`DATE CONFIRMED BY = ${dateConfirmedBy}`)
+        debug(`DATE CONFIRMED BY = ${dateConfirmedBy}`)
         if (dateConfirmedBy === '') {
-          console.log('NO CONFIRMATION, generateNewConfirmationMessage')
+          debug('NO CONFIRMATION, generateNewConfirmationMessage')
           const newTimeMessage = await generateNewConfirmationMessage()
 
           const newAssistantMessage: Message = {
@@ -102,12 +102,12 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
       }
 
       if (status === WAIT_TIME) {
-        console.log('CHECKING IF IT HAS A TIME')
+        debug('CHECKING IF IT HAS A TIME')
         time = await checkTimeOnMessage(newUserMessage)
-        console.log(`TIME = ${time}`)
+        debug(`TIME = ${time}`)
         const freeTime = getFreeTime(date)
         if (time === '') {
-          console.log('NO TIME, generateNewTimeMessage')
+          debug('NO TIME, generateNewTimeMessage')
           const newTimeMessage = await generateNewTimeMessage(freeTime)
 
           const newAssistantMessage: Message = {
@@ -124,7 +124,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
           handlingMessage = false
         } else {
           const timeIsAvailable = checkForAvailableTime(date, time)
-          console.log(`available time = ${timeIsAvailable}`)
+          debug(`available time = ${timeIsAvailable}`)
           if (timeIsAvailable) {
             status = WAIT_CONFIRMATION
           } else {
@@ -147,11 +147,11 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
       }
 
       if (status === WAIT_DATE) {
-        console.log('CHECKING IF IT HAS A DATE')
+        debug('CHECKING IF IT HAS A DATE')
         date = await checkDateOnMessage(newUserMessage)
-        console.log(`DATE = ${date}`)
+        debug(`DATE = ${date}`)
         if (date === '') {
-          console.log('NO DATE, generateNewDateMessage')
+          debug('NO DATE, generateNewDateMessage')
           const newDateMessage = await generateNewDateMessage(newUserMessage)
           const newAssistantMessage: Message = {
             id: 0,
@@ -188,10 +188,10 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     const dayOfWeek = dayNames[message.createdAt.getDay()]
     const lastAssistantMessage = getLastMessage('assistant')
     const prompt = `An user prompted: "${message.content}" for the question "${lastAssistantMessage.content}". Extract a date in the YYYY-MM-DD format from user's prompt using ${today}, ${dayOfWeek}, as current date. Return only the date in YYYY-MM-DD format without any text. If no date detected return the word "empty"`
-    console.log(`CHECK DATE PROMPT = ${prompt}`)
+    debug(`CHECK DATE PROMPT = ${prompt}`)
     const response = await ai.generateMessage(prompt)
 
-    console.log(response)
+    debug(response)
     return response.includes('empty') ? '' : response
   }
 
@@ -207,7 +207,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   ): Promise<string> => {
     const previousUserMessages = getUserMessages()
     const userMessages = previousUserMessages + `. ${newUserMessage.content}`
-    console.log(`USER MESSAGES: ${userMessages}`)
+    debug(`USER MESSAGES: ${userMessages}`)
     const prompt =
       `You're a clinic's secretary helping a customer to schedule an appointment after ${format(newUserMessage.createdAt, 'yyyy-MM-dd')}. Your last message sent to the customer was: "${getLastMessage('assistant').content}". Generate a${mood}message up to 20 words asking for a near future date based on the user messages sent so far: "` +
       getUserMessages() +
@@ -219,7 +219,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     freeTime: string[],
   ): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. Generate a${mood}message up to 30 words offering at least five of the following available times: ${freeTime}.`
-    console.log(prompt)
+    debug(prompt)
     return await ai.generateMessage(prompt)
   }
 
@@ -227,7 +227,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     freeTime: string[],
   ): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. The customer prompted an unavailable time at ${time} for your suggestion "${getLastMessage('assistant').content}". Generate a${mood}message up to 30 words offering at least five of the following available times and considering that ${time} is unavailable: ${freeTime}.`
-    console.log(prompt)
+    debug(prompt)
     return await ai.generateMessage(prompt)
   }
 
@@ -235,15 +235,15 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     newUserMessage: Message,
   ): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. A customer prompted: "${newUserMessage.content}" for the question "${getLastMessage('assistant').content}". Extract a time in the mm-HH format from user's prompt. Return only the time in mm:HH format without any text. If no time detected return the word "empty"`
-    console.log(prompt)
+    debug(prompt)
     const response = await ai.generateMessage(prompt)
-    console.log(response)
+    debug(response)
     return response.includes('empty') ? '' : response
   }
 
   const checkForAvailableTime = (date: string, time: string): boolean => {
     const selectedDate = new Date(date + 'T' + time)
-    console.log(`SELECTED DATE: ${selectedDate}`)
+    debug(`SELECTED DATE: ${selectedDate}`)
     return !findAppointmentByDate(selectedDate)
   }
 
@@ -251,21 +251,21 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     newUserMessage: Message,
   ): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. A customer prompted: "${newUserMessage.content}" for the question "${getLastMessage('assistant').content}". Extract a name from user's prompt as a confirmation. Return only the extracted name without any other text. If no name detected return the word "empty"`
-    console.log(prompt)
+    debug(prompt)
     const response = await ai.generateMessage(prompt)
-    console.log(response)
+    debug(response)
     return response.includes('empty') ? '' : response
   }
 
   const generateNewConfirmationMessage = async (): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer is asking for an appointment on ${date}, at ${time} hours. Generate a${mood}message up to 20 words asking the customer's name as a confirmation of the appointment.`
-    console.log(prompt)
+    debug(prompt)
     return await ai.generateMessage(prompt)
   }
 
   const generateFinalMessage = async (): Promise<string> => {
     const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer confirmed the appointment on on ${date}, at ${time}. The customer name is ${dateConfirmedBy}. Generate a${mood}message up to 20 words confirming the appointment.`
-    console.log(prompt)
+    debug(prompt)
     return await ai.generateMessage(prompt)
   }
 

@@ -1,4 +1,5 @@
 import { IChatAssistant } from '@/types'
+import { debug } from '@/utils'
 import { PaperPlaneRight } from '@phosphor-icons/react'
 import { format } from 'date-fns'
 import React, { useRef, useEffect, useState } from 'react'
@@ -30,7 +31,7 @@ export function Chat({ chatAssistant }: IProps) {
     try {
       await handleSubmit(event)
     } catch (error) {
-      console.log(error)
+      debug(error)
     }
 
     setIsLoading(false)
