@@ -31,13 +31,13 @@ export function Header() {
             onChange={handleSelectChange}
             className="cursor-pointer appearance-none rounded-lg border border-gray-300 bg-white p-1 pr-4 text-xs leading-tight hover:opacity-85 focus:bg-white focus:outline-none md:p-2 md:text-sm"
           >
-            <option value="">Select Mood</option>
-            <option value="funny">Funny</option>
-            <option value="polite" defaultChecked>
+            <option value=" ">Select Mood</option>
+            <option value=" funny ">Funny</option>
+            <option value=" polite " defaultChecked>
               Polite
             </option>
-            <option value="ironic">Ironic</option>
-            <option value="neutral">Neutral</option>
+            <option value=" ironic ">Ironic</option>
+            <option value=" neutral ">Neutral</option>
           </select>
         </div>
 
