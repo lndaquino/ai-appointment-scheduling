@@ -20,7 +20,7 @@ const dayNames = [
 let status = WAIT_DATE
 let date = ''
 let time = ''
-let dateConfirmedBy = ''
+let confirmedBy = ''
 
 const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   const { mood, handleFinishedClose } = useContext(AppContext)
@@ -43,65 +43,34 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     if (!input) return
 
-    const newUserMessage: Message = {
-      id: 0,
-      createdAt: new Date(),
-      content: input,
-      role: 'user',
-    }
-    setMessages((prevMessages) => {
-      newUserMessage.id = prevMessages.length + 1
-      return [...prevMessages, newUserMessage]
-    })
+    const newUserMessage = addNewUserMessage(input)
     setInput('')
 
-    let handlingMessage = true
-    while (handlingMessage) {
-      debug(
-        `status = ${status} / date = ${date} / time = ${time} / dateConfirmedBy = ${dateConfirmedBy}`,
-      )
-      if (status === WAIT_CONFIRMATION) {
-        debug('CHECKING IF IT HAS A CONFIRMATION')
-        dateConfirmedBy = await checkForConfirmation(newUserMessage)
-        debug(`DATE CONFIRMED BY = ${dateConfirmedBy}`)
-        if (dateConfirmedBy === '') {
-          debug('NO CONFIRMATION, generateNewConfirmationMessage')
-          const newTimeMessage = await generateNewConfirmationMessage()
-
-          const newAssistantMessage: Message = {
-            id: 0,
-            createdAt: new Date(),
-            content: newTimeMessage,
-            role: 'assistant',
+    switch (status) {
+      case WAIT_DATE:
+          debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`) 
+          debug('CHECKING IF IT HAS A DATE')
+          date = await checkDateOnMessage(newUserMessage)
+          debug(`DATE = ${date}`)
+          if (date === '') {
+            debug('NO DATE, generateNewDateMessage')
+            const newDateMessage = await generateNewDateMessage(newUserMessage)
+            addNewAssistantMessage(newDateMessage)
+            break
+          } else {
+            if (isFutureDate(date)) {
+              status = WAIT_TIME
+            } else {
+              debug('PAST DATE, generateNewDateMessage')
+              const newDateMessage = await generateNewDateMessage(newUserMessage)
+              addNewAssistantMessage(newDateMessage)
+              date = ''
+              break
+            }
           }
 
-          setMessages((prevMessages) => {
-            newAssistantMessage.id = prevMessages.length + 1
-            return [...prevMessages, newAssistantMessage]
-          })
-          handlingMessage = false
-        } else {
-          createAppointment(new Date(date + 'T' + time), dateConfirmedBy)
-          const newFinalMessage = await generateFinalMessage()
-
-          const newAssistantMessage: Message = {
-            id: 0,
-            createdAt: new Date(),
-            content: newFinalMessage,
-            role: 'assistant',
-          }
-
-          setMessages((prevMessages) => {
-            newAssistantMessage.id = prevMessages.length + 1
-            return [...prevMessages, newAssistantMessage]
-          })
-          handlingMessage = false
-          setIsConfirmed(true)
-          handleFinishedClose()
-        }
-      }
-
-      if (status === WAIT_TIME) {
+      case WAIT_TIME: 
+        debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`)
         debug('CHECKING IF IT HAS A TIME')
         time = await checkTimeOnMessage(newUserMessage)
         debug(`TIME = ${time}`)
@@ -109,66 +78,37 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
         if (time === '') {
           debug('NO TIME, generateNewTimeMessage')
           const newTimeMessage = await generateNewTimeMessage(freeTime)
-
-          const newAssistantMessage: Message = {
-            id: 0,
-            createdAt: new Date(),
-            content: newTimeMessage,
-            role: 'assistant',
-          }
-
-          setMessages((prevMessages) => {
-            newAssistantMessage.id = prevMessages.length + 1
-            return [...prevMessages, newAssistantMessage]
-          })
-          handlingMessage = false
+          addNewAssistantMessage(newTimeMessage)
+          break
         } else {
           const timeIsAvailable = checkForAvailableTime(date, time)
           debug(`available time = ${timeIsAvailable}`)
           if (timeIsAvailable) {
-            status = WAIT_CONFIRMATION
+            status=WAIT_CONFIRMATION
           } else {
-            const newTimeMessage =
-              await generateNewTimeMessageForUnavailableDate(freeTime)
-            const newAssistantMessage: Message = {
-              id: 0,
-              createdAt: new Date(),
-              content: newTimeMessage,
-              role: 'assistant',
-            }
-
-            setMessages((prevMessages) => {
-              newAssistantMessage.id = prevMessages.length + 1
-              return [...prevMessages, newAssistantMessage]
-            })
-            handlingMessage = false
+            const newTimeMessage = await generateNewTimeMessageForUnavailableDate(freeTime)
+            addNewAssistantMessage(newTimeMessage)
+            break
           }
         }
-      }
 
-      if (status === WAIT_DATE) {
-        debug('CHECKING IF IT HAS A DATE')
-        date = await checkDateOnMessage(newUserMessage)
-        debug(`DATE = ${date}`)
-        if (date === '') {
-          debug('NO DATE, generateNewDateMessage')
-          const newDateMessage = await generateNewDateMessage(newUserMessage)
-          const newAssistantMessage: Message = {
-            id: 0,
-            createdAt: new Date(),
-            content: newDateMessage,
-            role: 'assistant',
-          }
-
-          setMessages((prevMessages) => {
-            newAssistantMessage.id = prevMessages.length + 1
-            return [...prevMessages, newAssistantMessage]
-          })
-          handlingMessage = false
+      case WAIT_CONFIRMATION: 
+        debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`)
+        debug('CHECKING IF IT HAS A CONFIRMATION')
+        confirmedBy = await checkForConfirmation(newUserMessage)
+        debug(`DATE CONFIRMED BY = ${confirmedBy}`)
+        if (confirmedBy === '') {
+          debug('NO CONFIRMATION, generateNewConfirmationMessage')
+          const newConfirmedByMessage = await generateNewConfirmationMessage()
+          addNewAssistantMessage(newConfirmedByMessage)
         } else {
-          status = WAIT_TIME
+          createAppointment(new Date(date+"T"+time),confirmedBy)
+          const newFinalMessage = await generateFinalMessage()
+          addNewAssistantMessage(newFinalMessage)
+          setIsConfirmed(true)
+          handleFinishedClose()
         }
-      }
+        break
     }
   }
 
@@ -213,6 +153,12 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
       getUserMessages() +
       `."`
     return await ai.generateMessage(prompt)
+  }
+
+  const isFutureDate = (date:string):boolean=>{
+    const now = new Date()
+    const newDate = new Date(date)
+    return now.getTime() < newDate.getTime()
   }
 
   const generateNewTimeMessage = async (
@@ -264,9 +210,38 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   }
 
   const generateFinalMessage = async (): Promise<string> => {
-    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer confirmed the appointment on on ${date}, at ${time}. The customer name is ${dateConfirmedBy}. Generate a${mood}message up to 20 words confirming the appointment.`
+    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer confirmed the appointment on on ${date}, at ${time}. The customer name is ${confirmedBy}. Generate a${mood}message up to 20 words confirming the appointment.`
     debug(prompt)
     return await ai.generateMessage(prompt)
+  }
+
+  const addNewUserMessage = (msg: string): Message => {
+    const newUserMessage: Message = {
+      id: 0,
+      createdAt: new Date(),
+      content: msg,
+      role: 'user',
+    }
+    setMessages((prevMessages) => {
+      newUserMessage.id = prevMessages.length + 1
+      return [...prevMessages, newUserMessage]
+    })
+
+    return newUserMessage
+  }
+
+  const addNewAssistantMessage = (msg: string) => {
+    const newAssistantMessage: Message = {
+      id: 0,
+      createdAt: new Date(),
+      content: msg,
+      role: 'assistant',
+    }
+
+    setMessages((prevMessages) => {
+      newAssistantMessage.id = prevMessages.length + 1
+      return [...prevMessages, newAssistantMessage]
+    })
   }
 
   return {
