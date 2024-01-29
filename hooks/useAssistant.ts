@@ -209,7 +209,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     const userMessages = previousUserMessages + `. ${newUserMessage.content}`
     console.log(`USER MESSAGES: ${userMessages}`)
     const prompt =
-      `You're a clinic's secretary helping a customer to schedule an appointment after ${format(newUserMessage.createdAt, 'yyyy-MM-dd')}. Your last message sent to the customer was: "${getLastMessage('assistant').content}". Generate a ${mood} message up to 20 words asking for a near future date based on the user messages sent so far: "` +
+      `You're a clinic's secretary helping a customer to schedule an appointment after ${format(newUserMessage.createdAt, 'yyyy-MM-dd')}. Your last message sent to the customer was: "${getLastMessage('assistant').content}". Generate a${mood}message up to 20 words asking for a near future date based on the user messages sent so far: "` +
       getUserMessages() +
       `."`
     return await ai.generateMessage(prompt)
@@ -218,7 +218,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   const generateNewTimeMessage = async (
     freeTime: string[],
   ): Promise<string> => {
-    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. Generate a ${mood} message up to 30 words offering at least five of the following available times: ${freeTime}.`
+    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. Generate a${mood}message up to 30 words offering at least five of the following available times: ${freeTime}.`
     console.log(prompt)
     return await ai.generateMessage(prompt)
   }
@@ -226,7 +226,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   const generateNewTimeMessageForUnavailableDate = async (
     freeTime: string[],
   ): Promise<string> => {
-    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. The customer prompted an unavailable time at ${time} for your suggestion "${getLastMessage('assistant').content}". Generate a ${mood} message up to 30 words offering at least five of the following available times and considering that ${time} is unavailable: ${freeTime}.`
+    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment on day ${date}. The customer prompted an unavailable time at ${time} for your suggestion "${getLastMessage('assistant').content}". Generate a${mood}message up to 30 words offering at least five of the following available times and considering that ${time} is unavailable: ${freeTime}.`
     console.log(prompt)
     return await ai.generateMessage(prompt)
   }
@@ -258,13 +258,13 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   }
 
   const generateNewConfirmationMessage = async (): Promise<string> => {
-    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer is asking for an appointment on ${date}, at ${time} hours. Generate a ${mood} message up to 20 words asking the customer's name as a confirmation of the appointment.`
+    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer is asking for an appointment on ${date}, at ${time} hours. Generate a${mood}message up to 20 words asking the customer's name as a confirmation of the appointment.`
     console.log(prompt)
     return await ai.generateMessage(prompt)
   }
 
   const generateFinalMessage = async (): Promise<string> => {
-    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer confirmed the appointment on on ${date}, at ${time}. The customer name is ${dateConfirmedBy}. Generate a ${mood} message up to 20 words confirming the appointment.`
+    const prompt = `You're a clinic's secretary helping a customer to schedule an appointment. The customer confirmed the appointment on on ${date}, at ${time}. The customer name is ${dateConfirmedBy}. Generate a${mood}message up to 20 words confirming the appointment.`
     console.log(prompt)
     return await ai.generateMessage(prompt)
   }

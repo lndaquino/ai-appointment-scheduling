@@ -68,6 +68,7 @@ export function Chat({ chatAssistant }: IProps) {
           placeholder="Say something..."
           onChange={handleInputChange}
           disabled={isConfirmed || isLoading}
+          autoFocus={true}
         />
 
         <button

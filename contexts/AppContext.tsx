@@ -16,7 +16,7 @@ interface AppContextProps {
 export const AppContext = createContext({} as AppContextType)
 
 export function AppContextProvider({ children }: AppContextProps) {
-  const [mood, setMood] = useState('Select Mood')
+  const [mood, setMood] = useState(' ')
   const [isFinishedOpen, setIsFinishedOpen] = useState(false)
 
   const handleFinishedClose = () => {
