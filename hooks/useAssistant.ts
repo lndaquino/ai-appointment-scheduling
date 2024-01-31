@@ -132,7 +132,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     const response = await ai.generateMessage(prompt)
 
     debug(response)
-    return response.includes('empty') ? '' : response
+    return response.toLowerCase().includes('empty') ? '' : response
   }
 
   const getUserMessages = (): string => {
@@ -184,7 +184,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     debug(prompt)
     const response = await ai.generateMessage(prompt)
     debug(response)
-    return response.includes('empty') ? '' : response
+    return response.toLowerCase().includes('empty') ? '' : response
   }
 
   const checkForAvailableTime = (date: string, time: string): boolean => {
@@ -200,7 +200,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     debug(prompt)
     const response = await ai.generateMessage(prompt)
     debug(response)
-    return response.includes('empty') ? '' : response
+    return response.toLowerCase().includes('empty') ? '' : response
   }
 
   const generateNewConfirmationMessage = async (): Promise<string> => {
