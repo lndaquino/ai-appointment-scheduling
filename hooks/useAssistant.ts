@@ -200,6 +200,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     debug(prompt)
     const response = await ai.generateMessage(prompt)
     debug(response)
+    if (response.length < 4 || response.length > 20) return ''
     return response.toLowerCase().includes('empty') ? '' : response
   }
 
