@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## AI driven agent to schedule appointments
 
-## Getting Started
+This project is a proof-of-concept on how to combine an open-source LLM in a chat based AI driven agent 
+that helps to schedule an appointment.
 
-First, run the development server:
+The main concepts are the usage of a state machine that coordinates a LLM to perform name-entity recognition/extraction (NER), as well as generating messages while conducting the chat.
+
+There is a calendar available showing the already booked appointments, as well the newly created one when all the flow is completed.
+
+The mood selector allows to define the kind of message that the LLM will generate.
+
+Hugginface is the API provider, where all inference using the LLM is done. The model used allows the usage of a free account.
+
+
+## Running it locally
+After renaming the .env.example to .env.local, add the Hugging Face's write token.
 
 ```bash
+nvm use
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Development
+The usage of other LLM models is a future possibility, both paid and open-source ones.
 
-## Learn More
+Adding a voice layer (instead only chat) is also a future possibility.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Any contribution and suggestion, reach out to the contributors.
