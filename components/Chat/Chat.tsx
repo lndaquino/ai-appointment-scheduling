@@ -45,14 +45,14 @@ export function Chat({ chatAssistant }: IProps) {
     <div className="relative flex flex-col justify-between bg-gray-50 xl:h-screen">
       <div
         ref={messagesContainerRef}
-        className="z-0 flex max-h-screen w-full flex-col overflow-y-auto p-4 pb-20 pt-24"
+        className="fixed z-0 flex h-screen w-full flex-col overflow-y-auto border-b p-4 pb-20 pt-24 xl:w-3/5"
       >
         {messages.map((message, index) => (
           <div
             key={index}
             className={`m-2 flex flex-col rounded shadow ${message.role === 'user' ? 'bubble right bg-indigo-200' : 'bubble left bg-gray-200'}`}
           >
-            <span className="mx-2 my-3 text-xs xl:mx-4 xl:my-2 xl:text-sm">
+            <span className="mx-4 my-3 text-xs xl:mx-4 xl:my-2 xl:text-sm">
               {message.content}
             </span>
           </div>
