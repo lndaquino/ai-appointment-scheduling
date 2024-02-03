@@ -1,7 +1,6 @@
 import { IChatAssistant } from '@/types'
 import { debug } from '@/utils'
 import { PaperPlaneRight } from '@phosphor-icons/react'
-import { format } from 'date-fns'
 import React, { useRef, useEffect, useState } from 'react'
 
 interface IProps {
@@ -43,30 +42,25 @@ export function Chat({ chatAssistant }: IProps) {
   }
 
   return (
-    <div className="flex h-screen flex-col justify-between bg-gray-50">
+    <div className="relative flex flex-col justify-between bg-gray-50 xl:h-screen">
       <div
         ref={messagesContainerRef}
-        className="z-0 mt-20 flex max-h-screen w-full flex-col overflow-y-auto p-4"
+        className="z-0 flex max-h-screen w-full flex-col overflow-y-auto p-4 pb-20 pt-24"
       >
         {messages.map((message, index) => (
           <div
             key={index}
             className={`m-2 flex flex-col rounded shadow ${message.role === 'user' ? 'bubble right bg-indigo-200' : 'bubble left bg-gray-200'}`}
           >
-            <span className="mx-4 my-2 text-sm">{message.content}</span>
-            <span className="pr-2 text-end text-[11px]">
-              {new Date().toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-              })}
+            <span className="mx-2 my-3 text-xs xl:mx-4 xl:my-2 xl:text-sm">
+              {message.content}
             </span>
           </div>
         ))}
       </div>
       <form
         onSubmit={handleFormSubmit}
-        className="z-10 flex gap-2 border-t bg-indigo-400 px-4 py-4"
+        className="fixed bottom-0 z-10 flex w-full gap-2 border-t bg-indigo-400 px-4 py-4 xl:w-3/5"
       >
         <input
           ref={inputRef}
