@@ -40,7 +40,10 @@ export default function Home() {
           className="fixed inset-0 z-40 h-screen w-screen opacity-75"
           onClick={handleFinishedClose}
         />
-        <FinishedModal handleFinishedClose={handleFinishedClose} />
+        <FinishedModal
+          lastAppointmentCreated={calendar.lastAppointmentCreated}
+          handleFinishedClose={handleFinishedClose}
+        />
       </Dialog.Root>
 
       {/** Main */}

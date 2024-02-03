@@ -6,6 +6,9 @@ const useCalendar = () => {
     return initAppointments()
   })
 
+  const [lastAppointmentCreated, setLastAppointmentCreated] =
+    useState<Appointment | null>(null)
+
   const findAppointmentByDate = (searchDate: Date): Appointment | undefined => {
     const appointmentsOnDate = appointments.find(
       (appointment) => appointment.date.getTime() === searchDate.getTime(),
@@ -19,6 +22,7 @@ const useCalendar = () => {
       current.push(appt)
       return current
     })
+    setLastAppointmentCreated(appt)
   }
 
   const getFreeTime = (date: string): string[] => {
@@ -70,6 +74,7 @@ const useCalendar = () => {
     appointments,
     findAppointmentByDate,
     createAppointment,
+    lastAppointmentCreated,
     getFreeTime,
   }
 }
