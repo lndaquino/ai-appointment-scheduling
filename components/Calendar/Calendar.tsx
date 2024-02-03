@@ -81,8 +81,6 @@ export function Calendar({ calendar }: IProps) {
     )
   }
 
-  const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-
   const [clientAppointments, setClientAppointments] = useState<Appointment[]>(
     [],
   )
@@ -132,11 +130,13 @@ export function Calendar({ calendar }: IProps) {
               <table className="w-full" style={{ tableLayout: 'fixed' }}>
                 <thead>
                   <tr>
-                    {daysOfWeek.map((day) => (
-                      <th key={day} className="h-12 text-center">
-                        {day}
-                      </th>
-                    ))}
+                    <th className="h-12 text-center">Sun</th>
+                    <th className="h-12 text-center">Mon</th>
+                    <th className="h-12 text-center">Tue</th>
+                    <th className="h-12 text-center">Wed</th>
+                    <th className="h-12 text-center">Thu</th>
+                    <th className="h-12 text-center">Fri</th>
+                    <th className="h-12 text-center">Sat</th>
                   </tr>
                 </thead>
                 <tbody>
