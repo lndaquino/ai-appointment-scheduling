@@ -24,18 +24,44 @@ const useCalendar = () => {
   const getFreeTime = (date: string): string[] => {
     const startDate = new Date(date)
     const endDate = new Date(date)
-    const availableTimes = ['08:00', '08:30','09:00','09:30','10:00', '10:30','11:00','11:30','12:00', '12:30','13:00','13:30','14:00', '14:30','15:00','15:30','16:00', '16:30','17:00','17:30','18:00']
-    endDate.setTime(endDate.getTime() + 24*60*60*1000)
+    const availableTimes = [
+      '08:00',
+      '08:30',
+      '09:00',
+      '09:30',
+      '10:00',
+      '10:30',
+      '11:00',
+      '11:30',
+      '12:00',
+      '12:30',
+      '13:00',
+      '13:30',
+      '14:00',
+      '14:30',
+      '15:00',
+      '15:30',
+      '16:00',
+      '16:30',
+      '17:00',
+      '17:30',
+      '18:00',
+    ]
+    endDate.setTime(endDate.getTime() + 24 * 60 * 60 * 1000)
 
     const appointmentsOnDate = appointments.filter(
-      (appt) => ((startDate.getTime() <= appt.date.getTime()) && (appt.date.getTime()<=endDate.getTime()))
+      (appt) =>
+        startDate.getTime() <= appt.date.getTime() &&
+        appt.date.getTime() <= endDate.getTime(),
     )
-    const occupiedTimes = appointmentsOnDate.map(appt => {
-      const hours = String(appt.date.getHours()).padStart(2, '0');
-      const minutes = String(appt.date.getMinutes()).padStart(2, '0');
-      return `${hours}:${minutes}`;
+    const occupiedTimes = appointmentsOnDate.map((appt) => {
+      const hours = String(appt.date.getHours()).padStart(2, '0')
+      const minutes = String(appt.date.getMinutes()).padStart(2, '0')
+      return `${hours}:${minutes}`
     })
-    const availableTimesWithouOccupied = availableTimes.filter(t => !occupiedTimes.includes(t))
+    const availableTimesWithouOccupied = availableTimes.filter(
+      (t) => !occupiedTimes.includes(t),
+    )
 
     return availableTimesWithouOccupied
   }
@@ -44,7 +70,7 @@ const useCalendar = () => {
     appointments,
     findAppointmentByDate,
     createAppointment,
-    getFreeTime
+    getFreeTime,
   }
 }
 
