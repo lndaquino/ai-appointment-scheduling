@@ -1,12 +1,31 @@
 /* eslint-disable react/no-unescaped-entities */
+import { Appointment } from '@/types'
 import { X } from '@phosphor-icons/react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 export function FinishedModal({
+  lastAppointmentCreated,
   handleFinishedClose,
 }: {
+  lastAppointmentCreated: Appointment | null
   handleFinishedClose: () => void
 }) {
+  function formatDate(date: Date) {
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+    let hours = date.getHours()
+    const minutes = date.getMinutes()
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+
+    hours = hours % 12
+    hours = hours || 12
+
+    const minutesPadded = minutes.toString().padStart(2, '0')
+
+    return `${month}/${day}/${year} at ${hours}:${minutesPadded} ${ampm}`
+  }
+
   return (
     <Dialog.Portal>
       <Dialog.Content
@@ -25,7 +44,10 @@ export function FinishedModal({
             Thank you!
           </h1>
           <h2 className="mb-2 text-center text-base text-gray-700 md:text-xl">
-            Your appointment was just scheduled!
+            Your appointment{' '}
+            {lastAppointmentCreated && lastAppointmentCreated.name} has just
+            been scheduled for{' '}
+            {lastAppointmentCreated && formatDate(lastAppointmentCreated.date)}.
           </h2>
         </div>
       </Dialog.Content>
