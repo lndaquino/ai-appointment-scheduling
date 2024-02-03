@@ -41,12 +41,10 @@ export function FinishedModal({
 
         <div className="flex flex-col items-center justify-center gap-6 p-4 pt-0">
           <h1 className="mb-2 text-center text-lg font-bold text-indigo-600 md:text-2xl">
-            Thank you!
+            Thank you, {lastAppointmentCreated && lastAppointmentCreated.name}!
           </h1>
           <h2 className="mb-2 text-center text-base text-gray-700 md:text-xl">
-            Your appointment{' '}
-            {lastAppointmentCreated && lastAppointmentCreated.name} has just
-            been scheduled for{' '}
+            Your appointment has just been scheduled for{' '}
             {lastAppointmentCreated && formatDate(lastAppointmentCreated.date)}.
           </h2>
         </div>
