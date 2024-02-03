@@ -93,6 +93,19 @@ export function Calendar({ calendar }: IProps) {
     return 'bg-yellow-200'
   }
 
+  function formatTimeToAMPM(date: Date): string {
+    let hours = date.getHours()
+    const minutes = date.getMinutes()
+    const ampm = hours >= 12 ? 'PM' : 'AM'
+
+    hours = hours % 12
+    hours = hours || 12
+
+    const minutesStr = minutes < 10 ? '0' + minutes : minutes.toString()
+
+    return `${hours}:${minutesStr}${ampm}`
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       const { appointments } = calendar
@@ -140,14 +153,14 @@ export function Calendar({ calendar }: IProps) {
                         {week.map((date) => (
                           <td
                             key={date.toString()}
-                            className={`${
+                            className={` ${
                               !isSameMonth(date, month.startOfMonth)
                                 ? 'text-gray-100'
                                 : ''
                             } text-sm`}
                           >
                             <div
-                              className={`m-1 h-40 w-auto rounded-lg p-2 shadow-lg ${
+                              className={`m-1 h-40 w-auto min-w-16 rounded-lg p-2 shadow-lg ${
                                 isToday(date)
                                   ? 'border bg-yellow-50 font-bold'
                                   : ''
@@ -184,7 +197,7 @@ export function Calendar({ calendar }: IProps) {
                                       <p className="flex flex-col">
                                         <span>{appointment.name}</span>
                                         <span
-                                          className={`text-xs ${
+                                          className={`whitespace-nowrap text-xs ${
                                             !isSameMonth(
                                               date,
                                               month.startOfMonth,
@@ -193,7 +206,7 @@ export function Calendar({ calendar }: IProps) {
                                               : 'text-gray-600'
                                           }`}
                                         >
-                                          {format(appointment.date, 'HH:mm')}
+                                          {formatTimeToAMPM(appointment.date)}
                                         </span>
                                       </p>
                                     </div>
