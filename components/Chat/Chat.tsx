@@ -1,6 +1,7 @@
 import { IChatAssistant } from '@/types'
 import { debug } from '@/utils'
 import { PaperPlaneRight } from '@phosphor-icons/react'
+import { format } from 'date-fns'
 import React, { useRef, useEffect, useState } from 'react'
 
 interface IProps {
@@ -53,6 +54,13 @@ export function Chat({ chatAssistant }: IProps) {
             className={`m-2 flex flex-col rounded shadow ${message.role === 'user' ? 'bubble right bg-indigo-200' : 'bubble left bg-gray-200'}`}
           >
             <span className="mx-4 my-2 text-sm">{message.content}</span>
+            <span className="pr-2 text-end text-[11px]">
+              {new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              })}
+            </span>
           </div>
         ))}
       </div>
