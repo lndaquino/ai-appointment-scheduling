@@ -24,7 +24,7 @@ export function Header() {
           <Image src={logoMicro} alt="logo small" className="w-20 pl-4" />
         </div>
       </div>
-      <nav className="flex w-1/2 items-center justify-end space-x-6 pr-4">
+      <nav className="flex w-1/2 items-center justify-end space-x-2 pr-4 xl:space-x-6">
         <div>
           <select
             value={mood}

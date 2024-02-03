@@ -28,7 +28,7 @@ export default function Home() {
       </Dialog.Root>
 
       {/** Main */}
-      <div className="w-full xl:w-3/5 xl:border-r">
+      <div className="relative w-full xl:w-3/5 xl:border-r">
         <Header />
         <main className=" bg-neutral-100">
           <Chat chatAssistant={chatAssistant} />
