@@ -150,9 +150,9 @@ export function Calendar({ calendar }: IProps) {
 
                     return (
                       <tr key={weekIndex}>
-                        {week.map((date) => (
+                        {week.map((date, dateIndex) => (
                           <td
-                            key={date.toString()}
+                            key={dateIndex}
                             className={` ${
                               !isSameMonth(date, month.startOfMonth)
                                 ? 'text-gray-100'
@@ -184,7 +184,7 @@ export function Calendar({ calendar }: IProps) {
                                   )
                                   .map((appointment, index) => (
                                     <div
-                                      key={appointment.date.toString()}
+                                      key={index}
                                       className="flex gap-1 font-normal"
                                     >
                                       <span
