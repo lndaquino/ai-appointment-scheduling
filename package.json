@@ -6,24 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@huggingface/inference": "^2.6.4",
     "@phosphor-icons/react": "^2.0.15",
     "@radix-ui/react-dialog": "^1.0.5",
-    "@rocketseat/eslint-config": "^2.1.0",
     "@vercel/analytics": "^1.1.2",
     "ai": "^2.2.31",
     "date-fns": "^3.3.0",
     "next": "14.0.4",
-    "prettier": "^3.2.4",
-    "prettier-plugin-tailwindcss": "^0.5.11",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@rocketseat/eslint-config": "^2.1.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -32,6 +30,8 @@
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.33",
+    "prettier": "^3.2.4",
+    "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },

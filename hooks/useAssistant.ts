@@ -48,29 +48,33 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
 
     switch (status) {
       case WAIT_DATE:
-          debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`) 
-          debug('CHECKING IF IT HAS A DATE')
-          date = await checkDateOnMessage(newUserMessage)
-          debug(`DATE = ${date}`)
-          if (date === '') {
-            debug('NO DATE, generateNewDateMessage')
+        debug(
+          `status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`,
+        )
+        debug('CHECKING IF IT HAS A DATE')
+        date = await checkDateOnMessage(newUserMessage)
+        debug(`DATE = ${date}`)
+        if (date === '') {
+          debug('NO DATE, generateNewDateMessage')
+          const newDateMessage = await generateNewDateMessage(newUserMessage)
+          addNewAssistantMessage(newDateMessage)
+          break
+        } else {
+          if (isFutureDate(date)) {
+            status = WAIT_TIME
+          } else {
+            debug('PAST DATE, generateNewDateMessage')
             const newDateMessage = await generateNewDateMessage(newUserMessage)
             addNewAssistantMessage(newDateMessage)
+            date = ''
             break
-          } else {
-            if (isFutureDate(date)) {
-              status = WAIT_TIME
-            } else {
-              debug('PAST DATE, generateNewDateMessage')
-              const newDateMessage = await generateNewDateMessage(newUserMessage)
-              addNewAssistantMessage(newDateMessage)
-              date = ''
-              break
-            }
           }
+        }
 
-      case WAIT_TIME: 
-        debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`)
+      case WAIT_TIME:
+        debug(
+          `status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`,
+        )
         debug('CHECKING IF IT HAS A TIME')
         time = await checkTimeOnMessage(newUserMessage)
         debug(`TIME = ${time}`)
@@ -84,16 +88,19 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
           const timeIsAvailable = checkForAvailableTime(date, time)
           debug(`available time = ${timeIsAvailable}`)
           if (timeIsAvailable) {
-            status=WAIT_CONFIRMATION
+            status = WAIT_CONFIRMATION
           } else {
-            const newTimeMessage = await generateNewTimeMessageForUnavailableDate(freeTime)
+            const newTimeMessage =
+              await generateNewTimeMessageForUnavailableDate(freeTime)
             addNewAssistantMessage(newTimeMessage)
             break
           }
         }
 
-      case WAIT_CONFIRMATION: 
-        debug(`status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`)
+      case WAIT_CONFIRMATION:
+        debug(
+          `status = ${status} / date = ${date} / time = ${time} / confirmedBy = ${confirmedBy}`,
+        )
         debug('CHECKING IF IT HAS A CONFIRMATION')
         confirmedBy = await checkForConfirmation(newUserMessage)
         debug(`DATE CONFIRMED BY = ${confirmedBy}`)
@@ -102,7 +109,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
           const newConfirmedByMessage = await generateNewConfirmationMessage()
           addNewAssistantMessage(newConfirmedByMessage)
         } else {
-          createAppointment(new Date(date+"T"+time),confirmedBy)
+          createAppointment(new Date(date + 'T' + time), confirmedBy)
           const newFinalMessage = await generateFinalMessage()
           addNewAssistantMessage(newFinalMessage)
           setIsConfirmed(true)
@@ -155,7 +162,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
     return await ai.generateMessage(prompt)
   }
 
-  const isFutureDate = (date:string):boolean=>{
+  const isFutureDate = (date: string): boolean => {
     const now = new Date()
     const newDate = new Date(date)
     return now.getTime() < newDate.getTime()
