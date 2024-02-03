@@ -11,6 +11,7 @@ export function Chat({ chatAssistant }: IProps) {
   const { messages, input, handleInputChange, handleSubmit, isConfirmed } =
     chatAssistant
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
@@ -23,6 +24,12 @@ export function Chat({ chatAssistant }: IProps) {
 
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    if (!isLoading && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isLoading])
 
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -64,7 +71,8 @@ export function Chat({ chatAssistant }: IProps) {
         className="z-10 flex gap-2 border-t bg-indigo-400 px-4 py-4"
       >
         <input
-          className="z-30 w-full rounded border border-gray-300 bg-gray-50 p-1 text-sm shadow-lg outline-none "
+          ref={inputRef} // Apply the ref here
+          className="z-30 w-full rounded border border-gray-300 bg-gray-50 p-1 text-sm shadow-lg outline-none"
           value={input}
           placeholder="Say something..."
           onChange={handleInputChange}
