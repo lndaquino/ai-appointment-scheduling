@@ -1,4 +1,4 @@
-import { Chat } from '@phosphor-icons/react'
+import { Chat, Info } from '@phosphor-icons/react'
 import { Microphone } from '@phosphor-icons/react/dist/ssr'
 import Image from 'next/image'
 import logo from '@/assets/logo.svg'
@@ -14,7 +14,7 @@ export function Header() {
   }
 
   return (
-    <header className="fixed z-50 flex h-16 w-full justify-between border-b shadow-lg md:h-20 xl:w-3/5">
+    <header className="fixed z-50 flex h-16 w-full justify-between border-b border-r bg-white shadow-lg md:h-20 xl:w-3/5">
       <div className="flex w-1/2 items-center">
         <div className="hidden md:block">
           <Image src={logo} alt="logo" priority style={{ width: 'auto' }} />
@@ -51,6 +51,27 @@ export function Header() {
           <span className="coming-soon absolute -top-full left-1/2 mt-16 hidden w-32 -translate-x-1/2 transform rounded-md bg-gray-100 px-2 py-1 text-sm text-black opacity-90">
             Coming soon...
           </span>
+        </button>
+
+        <button className="relative flex items-center justify-center gap-1 text-gray-600 hover:text-gray-500">
+          <Info className="size-4 md:size-6" />
+
+          <div className="coming-soon border-1 absolute -top-full ml-12 mt-16 hidden w-96 -translate-x-1/2 transform rounded-md bg-white p-4 text-sm">
+            <h1 className="mb-2 text-center text-base font-bold text-indigo-600 md:text-lg">
+              Welcome to the new era of scheduling!
+            </h1>
+            <p className="mb-4 text-center text-xs text-gray-600 md:text-sm">
+              Discover the power of our state-of-the-art AI virtual assistant,
+              meticulously designed to optimize your medical appointment
+              scheduling. This intuitive service enables you to effortlessly
+              browse and secure appointments, transforming a once-tedious task
+              into a simple, click-driven process.
+            </p>
+            <p className="text-center text-xs text-gray-600 md:text-sm">
+              Just type in and schedule your appointment. You can also look at
+              the calendar below and find out what times are available.
+            </p>
+          </div>
         </button>
       </nav>
     </header>

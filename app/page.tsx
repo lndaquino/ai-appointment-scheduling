@@ -1,12 +1,6 @@
 'use client'
-import { useState, useContext } from 'react'
-import {
-  Header,
-  Chat,
-  Calendar,
-  WelcomeModal,
-  FinishedModal,
-} from '../components'
+import { useContext } from 'react'
+import { Header, Chat, Calendar, FinishedModal } from '../components'
 import useCalendar from '@/hooks/useCalendar'
 import useAiModel from '@/hooks/useAiModel'
 import useAssistant from '@/hooks/useAssistant'
@@ -17,24 +11,11 @@ export default function Home() {
   const calendar = useCalendar()
   const mistralModel = useAiModel('mistral')
   const chatAssistant = useAssistant(mistralModel, calendar)
-  const [isWelcomeOpen, setIsWelcomeOpen] = useState(true)
-
-  const handleWelcomeClose = () => {
-    setIsWelcomeOpen(false)
-  }
 
   const { isFinishedOpen, handleFinishedClose } = useContext(AppContext)
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <Dialog.Root open={isWelcomeOpen}>
-        <Dialog.Overlay
-          className="fixed inset-0 z-40 h-screen w-screen opacity-75"
-          onClick={handleWelcomeClose}
-        />
-        <WelcomeModal handleWelcomeClose={handleWelcomeClose} />
-      </Dialog.Root>
-
       <Dialog.Root open={isFinishedOpen}>
         <Dialog.Overlay
           className="fixed inset-0 z-40 h-screen w-screen opacity-75"
