@@ -1,7 +1,6 @@
 import { IChatAssistant } from '@/types'
 import { debug } from '@/utils'
 import { PaperPlaneRight } from '@phosphor-icons/react'
-import { format } from 'date-fns'
 import React, { useRef, useEffect, useState } from 'react'
 
 interface IProps {
@@ -23,13 +22,11 @@ export function Chat({ chatAssistant }: IProps) {
     }
 
     scrollToBottom()
-  }, [messages])
 
-  useEffect(() => {
     if (!isLoading && inputRef.current) {
       inputRef.current.focus()
     }
-  }, [isLoading])
+  }, [messages, isLoading])
 
   async function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -44,25 +41,18 @@ export function Chat({ chatAssistant }: IProps) {
     setIsLoading(false)
   }
 
-  function extractHours(date: Date) {
-    return format(date, 'HH:mm')
-  }
-
   return (
     <div className="flex h-screen flex-col justify-between bg-gray-50">
       <div
         ref={messagesContainerRef}
         className="z-0 mt-20 flex max-h-screen w-full flex-col overflow-y-auto p-4"
       >
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
-            key={message.id}
-            className={`mx-2 my-1 flex flex-col rounded shadow ${message.role === 'user' ? 'bubble right bg-indigo-200' : 'bubble left bg-gray-200'}`}
+            key={index}
+            className={`m-2 flex flex-col rounded shadow ${message.role === 'user' ? 'bubble right bg-indigo-200' : 'bubble left bg-gray-200'}`}
           >
-            <p className="p-1 text-sm">{message.content}</p>
-            <span className="pb-1 pr-2 text-end text-xs text-gray-600">
-              {extractHours(message.createdAt)}
-            </span>
+            <span className="mx-4 my-2 text-sm">{message.content}</span>
           </div>
         ))}
       </div>
@@ -71,7 +61,7 @@ export function Chat({ chatAssistant }: IProps) {
         className="z-10 flex gap-2 border-t bg-indigo-400 px-4 py-4"
       >
         <input
-          ref={inputRef} // Apply the ref here
+          ref={inputRef}
           className="z-30 w-full rounded border border-gray-300 bg-gray-50 p-1 text-sm shadow-lg outline-none"
           value={input}
           placeholder="Say something..."
