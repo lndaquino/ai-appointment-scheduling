@@ -66,11 +66,12 @@ export function Header() {
               find out what times are available. Also, play with the agent mood.
             </p>
             <p className="mb-4 text-center text-xs text-gray-600 md:text-sm">
-              It's a proof-of-concept on how to combine an open-source LLM in a
-              chat based AI driven agent that helps to schedule an appointment.
-              The main concepts are the usage of a state machine that
-              coordinates a LLM to perform name-entity recognition/extraction
-              (NER), as well as generating messages while conducting the chat.
+              It&apos;s a proof-of-concept on how to combine an open-source LLM
+              in a chat based AI driven agent that helps to schedule an
+              appointment. The main concepts are the usage of a state machine
+              that coordinates a LLM to perform name-entity
+              recognition/extraction (NER), as well as generating messages while
+              conducting the chat.
             </p>
             <p className="text-center text-xs text-gray-600 md:text-sm">
               Reach out to the contributors on{' '}
