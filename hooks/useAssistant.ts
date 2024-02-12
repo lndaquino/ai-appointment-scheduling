@@ -41,6 +41,7 @@ const useAssistant = (ai: AIModel, calendar: ICalendar) => {
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     if (!input) return
 
     const newUserMessage = addNewUserMessage(input)

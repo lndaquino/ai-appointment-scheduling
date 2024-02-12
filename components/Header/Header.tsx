@@ -58,18 +58,29 @@ export function Header() {
 
           <div className="coming-soon border-1 absolute -top-full ml-12 mt-16 hidden w-96 -translate-x-1/2 transform rounded-md bg-white p-4 text-sm">
             <h1 className="mb-2 text-center text-base font-bold text-indigo-600 md:text-lg">
-              Welcome to the new era of scheduling!
+              Welcome to the AI-driven schedule bot!
             </h1>
             <p className="mb-4 text-center text-xs text-gray-600 md:text-sm">
-              Discover the power of our state-of-the-art AI virtual assistant,
-              meticulously designed to optimize your medical appointment
-              scheduling. This intuitive service enables you to effortlessly
-              browse and secure appointments, transforming a once-tedious task
-              into a simple, click-driven process.
+              Just type in and schedule your appointment. You can also look at
+              the calendar in the web version (not available on mobiles) and
+              find out what times are available. Also, play with the agent mood.
+            </p>
+            <p className="mb-4 text-center text-xs text-gray-600 md:text-sm">
+              It&apos;s a proof-of-concept on how to combine an open-source LLM
+              in a chat based AI driven agent that helps to schedule an
+              appointment. The main concepts are the usage of a state machine
+              that coordinates a LLM to perform name-entity
+              recognition/extraction (NER), as well as generating messages while
+              conducting the chat.
             </p>
             <p className="text-center text-xs text-gray-600 md:text-sm">
-              Just type in and schedule your appointment. You can also look at
-              the calendar below and find out what times are available.
+              Reach out to the contributors on{' '}
+              <a
+                className="text-purple-600"
+                href="https://github.com/lndaquino/ai-appointment-scheduling"
+              >
+                https://github.com/lndaquino/ai-appointment-scheduling
+              </a>
             </p>
           </div>
         </button>
