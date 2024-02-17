@@ -49,17 +49,17 @@
   cursor: pointer;
 }
 
-button:hover .coming-soon {
+button:hover .coming-soon{
   display: block;
 }
 
-.coming-soon {
+.coming-soon .info {
   text-align: center;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 200;
 }
 
-.coming-soon::after {
+.info::after {
   border: 15px solid transparent; /* {$2} */
   border-bottom-color: #eef2ff;
   content: '';
@@ -68,11 +68,6 @@ button:hover .coming-soon {
   position: absolute;
   top: -30px;
   width: 0;
-}
-
-.info {
-  text-align: center;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* CSS Spinner */
